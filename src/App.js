@@ -1,6 +1,7 @@
 import logo from './logo.svg';
 import './App.css';
 import Todo from './Todo';
+import {Paper, List} from '@mui/material';
 
 function App() {
 
@@ -21,9 +22,19 @@ function App() {
         return <Todo key={item.id} item={item} />;
     });
 
+    const paper = items.length > 0 && (
+        <Paper style={{margin: 16}}>
+            <List>
+                {todoItems}
+            </List>
+        </Paper>
+    );
+
+
+
     return (
         <div className="App">
-            {todoItems}
+            {paper}
         </div>
     );
 }
