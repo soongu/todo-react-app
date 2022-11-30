@@ -4,6 +4,8 @@ import Todo from './Todo';
 import AddTodo from "./AddTodo";
 import {Paper, List, Container} from '@mui/material';
 import React, {useState, useEffect} from "react";
+import axios from "axios";
+import {call} from "./service/ApiService";
 
 function App() {
 
@@ -23,29 +25,56 @@ function App() {
     ]);
 
     useEffect(() => {
+        const callTodoListApi = async () => {
+            call('/todo').then(res => {
+                console.log(res.data)
+                setItemList(res.data);
+            });
+            // console.log(response);
 
-    }, [itemList]);
+        };
+
+        callTodoListApi();
+    }, []);
 
     //할 일 추가
     const add = item => {
-        item.id = itemList.length + 1;
-        item.done = false;
-        setItemList(itemList => itemList.concat(item));
+
+        call("/todo", "POST", item)
+            .then(res => {
+                setItemList(res.data);
+            });
+
+        // item.id = itemList.length + 1;
+        // item.done = false;
+        // setItemList(itemList => itemList.concat(item));
 
         // console.log(itemList);
     };
 
     //할 일 삭제
     const remove = target => {
-        console.log('Before remove item', itemList);
 
-        const newItems = itemList.filter(item => item.id !== target.id);
-        setItemList(newItems);
+        call(`/todo/${target.id}`, "DELETE")
+            .then(res => {
+                setItemList(res.data);
+            });
+
+        // const newItems = itemList.filter(item => item.id !== target.id);
+        // setItemList(newItems);
 
     };
 
+    // 할 일 수정
+    const update = item => {
+        call(`/todo`, "PUT", item)
+            .then(res => {
+                setItemList(res.data);
+            });
+    };
+
     const todoItems = itemList.map(item => {
-        return <Todo key={item.id} item={item} remove={remove} />;
+        return <Todo key={item.id} item={item} remove={remove} update={update} />;
     });
 
     const paper = itemList.length > 0 && (

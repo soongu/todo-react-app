@@ -4,17 +4,17 @@ import React, {useState} from 'react';
 import {ListItem, ListItemText, InputBase, Checkbox, ListItemSecondaryAction, IconButton} from "@mui/material";
 import {DeleteOutline} from "@mui/icons-material";
 
-const Todo = (props) => {
+const Todo = ({item, update, remove}) => {
 
     const [state, setState] = useState({
-        item: props.item,
+        item: item,
         readOnly: true
     });
 
     const {id, title, done} = state.item;
 
     const removeClick = e => {
-        props.remove(state.item);
+        remove(state.item);
     };
 
     const offReadOnlyMode = () => {
@@ -24,6 +24,7 @@ const Todo = (props) => {
     const enterKeyEventHandler = e => {
         if (e.key === 'Enter') {
             setState({ ...state, readOnly: true });
+            update(state.item);
         }
     };
 
@@ -31,12 +32,14 @@ const Todo = (props) => {
         const thisItem = state.item;
         thisItem.title = e.target.value;
         setState({ ...state, thisItem });
+        update(state.item);
     };
 
     const checkEventHandler = e => {
         const thisItem = state.item;
         thisItem.done = !thisItem.done;
         setState({ ...state, thisItem });
+        update(state.item);
     };
 
     return (
