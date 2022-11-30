@@ -1,12 +1,15 @@
-import logo from './logo.svg';
+
 import './App.css';
 import Todo from './Todo';
 import AddTodo from "./AddTodo";
-import {Paper, List} from '@mui/material';
+import {Paper, List, Container} from '@mui/material';
+import React, {useState, useEffect} from "react";
 
 function App() {
 
-    const items = [
+
+
+    const [itemList, setItemList] = useState([
         {
             id: 1,
             title: 'hello world1',
@@ -17,16 +20,29 @@ function App() {
             title: 'hello world2',
             done: false
         }
-    ];
+    ]);
 
-    const todoItems = items.map(item => {
+    useEffect(() => {
+
+    }, [itemList]);
+
+    //할 일 추가
+    const add = item => {
+        item.id = itemList.length + 1;
+        item.done = false;
+        setItemList(itemList => itemList.concat(item));
+
+        // console.log(itemList);
+    };
+
+    const todoItems = itemList.map(item => {
         return <Todo key={item.id} item={item} />;
     });
 
-    const paper = items.length > 0 && (
+    const paper = itemList.length > 0 && (
         <Paper style={{margin: 16}}>
             <List>
-                <AddTodo />
+                <AddTodo add={add} />
                 <div className="TodoList">{todoItems}</div>
             </List>
         </Paper>
@@ -36,7 +52,9 @@ function App() {
 
     return (
         <div className="App">
+            <Container maxWidth="md">
             {paper}
+            </Container>
         </div>
     );
 }
