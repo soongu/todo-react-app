@@ -10,16 +10,16 @@ function App() {
 
 
     const [itemList, setItemList] = useState([
-        {
-            id: 1,
-            title: 'hello world1',
-            done: true
-        },
-        {
-            id: 2,
-            title: 'hello world2',
-            done: false
-        }
+        // {
+        //     id: 1,
+        //     title: 'hello world1',
+        //     done: true
+        // },
+        // {
+        //     id: 2,
+        //     title: 'hello world2',
+        //     done: false
+        // }
     ]);
 
     useEffect(() => {
@@ -35,14 +35,23 @@ function App() {
         // console.log(itemList);
     };
 
+    //할 일 삭제
+    const remove = target => {
+        console.log('Before remove item', itemList);
+
+        const newItems = itemList.filter(item => item.id !== target.id);
+        setItemList(newItems);
+
+    };
+
     const todoItems = itemList.map(item => {
-        return <Todo key={item.id} item={item} />;
+        return <Todo key={item.id} item={item} remove={remove} />;
     });
 
     const paper = itemList.length > 0 && (
         <Paper style={{margin: 16}}>
             <List>
-                <AddTodo add={add} />
+
                 <div className="TodoList">{todoItems}</div>
             </List>
         </Paper>
@@ -53,7 +62,8 @@ function App() {
     return (
         <div className="App">
             <Container maxWidth="md">
-            {paper}
+                <AddTodo add={add} />
+                {paper}
             </Container>
         </div>
     );
