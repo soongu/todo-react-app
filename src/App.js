@@ -4,11 +4,12 @@ import AddTodo from "./components/AddTodo";
 import {Container, List, Paper} from '@mui/material';
 import React, {useEffect, useState} from "react";
 import {call} from "./service/ApiService";
+import {Spinner} from "reactstrap";
 
 function App() {
 
 
-
+    const [loading, setLoading] = useState(true);
     const [itemList, setItemList] = useState([
         // {
         //     id: 1,
@@ -27,6 +28,7 @@ function App() {
             call('/todo').then(res => {
                 console.log(res.data)
                 setItemList(res.data);
+                setLoading(false);
             });
             // console.log(response);
 
@@ -72,7 +74,7 @@ function App() {
     };
 
     const todoItems = itemList.map(item => {
-        return <Todo key={item.id} item={item} remove={remove} update={update} />;
+        return <Todo key={item.id} item={item} remove={remove} update={update}/>;
     });
 
     const paper = itemList.length > 0 && (
@@ -84,14 +86,25 @@ function App() {
         </Paper>
     );
 
+    // 로딩 중이 아닐 때 렌더링할 페이지
+    const listPage = (
+        <Container maxWidth="md">
+            <AddTodo add={add}/>
+            {paper}
+        </Container>
+    );
+    // 로딩중일 때 렌더링할 페이지
+    const loadingPage = (
+        <Spinner color="info">
+            Loading...
+        </Spinner>);
+
+    const content = loading ? loadingPage : listPage;
 
 
     return (
         <div className="App" style={{marginTop: '150px'}}>
-            <Container maxWidth="md">
-                <AddTodo add={add} />
-                {paper}
-            </Container>
+            {content}
         </div>
     );
 }
