@@ -2,22 +2,21 @@ import {API_BASE_URL} from "../config/app-config";
 import axios from "axios";
 
 export const call = async(apiUri, method='GET', payload={}) => {
-    let responseData;
+
+    const error403 = () => {
+        alert('로그인이 필요한 서비스입니다.');
+        window.location.href='/login';
+    };
+
     const url = API_BASE_URL + apiUri;
-    switch (method) {
-        case 'GET':
-            responseData = await axios.get(url);
-            break;
-        case 'POST':
-            responseData = await axios.post(url, payload);
-            break;
-        case 'PUT':
-            responseData = await axios.put(url, payload);
-            break;
-        case 'DELETE':
-            responseData = await axios.delete(url);
-            break;
-    }
-    // console.log(responseData);
+
+    let responseData = await axios({
+        method: method,
+        url: url,
+        data: payload
+    }).catch(error => {
+        if (error.response.status === 403) error403();
+    });
+
     return responseData.data;
 }

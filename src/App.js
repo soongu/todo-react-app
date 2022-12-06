@@ -1,10 +1,8 @@
-
 import './App.css';
-import Todo from './Todo';
-import AddTodo from "./AddTodo";
-import {Paper, List, Container} from '@mui/material';
-import React, {useState, useEffect} from "react";
-import axios from "axios";
+import Todo from './components/Todo';
+import AddTodo from "./components/AddTodo";
+import {Container, List, Paper} from '@mui/material';
+import React, {useEffect, useState} from "react";
 import {call} from "./service/ApiService";
 
 function App() {
