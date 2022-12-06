@@ -20,3 +20,18 @@ export const call = async(apiUri, method='GET', payload={}) => {
 
     return responseData.data;
 }
+
+export const signin = (userInfo) => {
+
+    return axios.post(API_BASE_URL + '/auth/signin', userInfo)
+        .then(res => {
+            console.log(res);
+            if (res.data.token) {
+                window.location.href='/';
+            }
+        })
+        .catch(err => {
+            console.log(err);
+            alert(err.response.data.error);
+        });
+};
