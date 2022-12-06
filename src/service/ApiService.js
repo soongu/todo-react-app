@@ -35,6 +35,7 @@ export const call = async(apiUri, method='GET', payload={}) => {
     return responseData.data;
 }
 
+// 로그인 기능
 export const signin = (userInfo) => {
 
     return axios.post(API_BASE_URL + '/auth/signin', userInfo)
@@ -50,4 +51,11 @@ export const signin = (userInfo) => {
             console.log(err);
             alert(err.response.data.error);
         });
+};
+
+// 로그아웃 기능
+export const signout = () => {
+    // 토큰 제거
+    localStorage.removeItem(ACCESS_TOKEN);
+    window.location.href = '/login';
 };

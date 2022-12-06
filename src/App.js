@@ -87,7 +87,7 @@ function App() {
 
 
     return (
-        <div className="App">
+        <div className="App" style={{marginTop: '150px'}}>
             <Container maxWidth="md">
                 <AddTodo add={add} />
                 {paper}
