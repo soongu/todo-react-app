@@ -59,3 +59,34 @@ export const signout = () => {
     localStorage.removeItem(ACCESS_TOKEN);
     window.location.href = '/login';
 };
+
+// 회원 가입
+export const signup = (userInfo) => {
+
+    return axios.post(API_BASE_URL + '/auth/signup', userInfo)
+        .then(res => {
+            // console.log(res);
+            window.location.href='/login';
+        })
+        .catch(err => {
+            console.log(err);
+        });
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

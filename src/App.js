@@ -97,7 +97,8 @@ function App() {
     const loadingPage = (
         <Spinner color="info">
             Loading...
-        </Spinner>);
+        </Spinner>
+    );
 
     const content = loading ? loadingPage : listPage;
 
