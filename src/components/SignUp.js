@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useRef} from 'react';
 
 import {signup, call} from "../service/ApiService";
 import {Button, Container, Grid, TextField, Typography, Link} from "@mui/material";
@@ -10,6 +10,19 @@ function SignUp(props) {
     const [user, setUser] = useState({username: '', email: '', password: ''});
     const [validated, setValidated] = useState({username: false, email: false, password: false});
     const [errorMessage, setErrorMessage] = useState({username: '', email: '', password: ''});
+
+    const [imgFile, setImgFile] = useState("");
+    const imgRef = useRef();
+
+    // 이미지 업로드 input의 onChange
+    const saveImgFile = () => {
+        const file = imgRef.current.files[0];
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onloadend = () => {
+            setImgFile(reader.result);
+        };
+    };
 
 
     const handleName = (e) => {
@@ -101,7 +114,14 @@ function SignUp(props) {
         console.log(user);
 
         if (isValidateOk()) {
-            signup(user);
+
+            const userBlob = new Blob([JSON.stringify(user)], { type: "application/json" });
+
+            const userFormData = new FormData();
+            userFormData.append("user", userBlob);
+            userFormData.append("profileImage", imgRef.current.files[0]);
+
+            signup(userFormData);
         } else {
             alert('회원가입 입력란을 확인하세요!');
         }
@@ -118,6 +138,21 @@ function SignUp(props) {
                             계정 생성
                         </Typography>
                     </Grid>
+
+                    <Grid item xs={12}>
+                        <div className="thumbnail-box" onClick={() => imgRef.current.click()}>
+                            <img
+                                src={imgFile ? imgFile : require("../assets/img/image-add.png")}
+                                alt="프사프사"
+                            />
+                        </div>
+                        <label className="signup-img-label" htmlFor="profileImg">프로필 이미지 추가</label>
+                        <input id="profileImg" type="file" accept="image/*" style={{display: 'none'}}
+                               ref={imgRef}
+                               onChange={saveImgFile}
+                        />
+                    </Grid>
+
                     <Grid item xs={12}>
                         <TextField
                             autoComplete="fname"

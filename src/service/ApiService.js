@@ -65,7 +65,7 @@ export const signup = (userInfo) => {
 
     return axios.post(API_BASE_URL + '/auth/signup', userInfo)
         .then(res => {
-            // console.log(res);
+            console.log(res);
             window.location.href='/login';
         })
         .catch(err => {
